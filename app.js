@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send("Backend API Running");
 });
 
-app.use("/api", taskRoutes);
+app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use(errorMiddleware);
