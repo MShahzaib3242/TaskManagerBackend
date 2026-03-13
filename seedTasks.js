@@ -42,7 +42,7 @@ async function seedTasks() {
 
     process.exit();
   } catch (error) {
-    console.error("Error seeding tasks:", error);
+    console.error("Error seeding feed:", error);
     process.exit(1);
   }
 }

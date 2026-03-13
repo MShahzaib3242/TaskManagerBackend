@@ -4,7 +4,7 @@ const redisClient = require("../config/redis");
 const taskQueue = require("../queues/taskQueue");
 
 exports.getUserTasks = async (userId, query) => {
-  const cacheKey = `tasks:${userId}:${JSON.stringify(query)}`;
+  const cacheKey = `feed:${userId}:${JSON.stringify(query)}`;
   const cachedData = await redisClient.get(cacheKey);
 
   if (cachedData) {
@@ -84,7 +84,6 @@ exports.updateTask = async (taskId, userId, data) => {
 
   await task.save();
 
-  // await redisClient.del(`tasks:${userId}`);
   await redisClient.flushAll();
 
   return task;
@@ -102,6 +101,5 @@ exports.deleteTask = async (taskId, userId) => {
 
   await task.deleteOne();
 
-  // await redisClient.del(`tasks:${userId}`);
   await redisClient.flushAll();
 };

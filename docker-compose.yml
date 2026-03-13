@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: taskmanager_backend
+    container_name: mehfil_backend
     ports:
       - "3000:3000"
     depends_on:
@@ -13,8 +13,9 @@ services:
       - redis
     environment:
       PORT: 3000
-      MONGO_URI: mongodb://mongo:27017/taskmanager
-      REDIS_URL: redis://redis:6379
+      MONGO_URI: mongodb://mongo:27017/mehfil
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
       JWT_SECRET: myverystrongsecretkey
     volumes:
       - .:/app
@@ -22,21 +23,37 @@ services:
     command: npm run dev
     restart: unless-stopped
 
+  worker:
+    build: .
+    container_name: mehfil_worker
+    depends_on:
+      - redis
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/mehfil
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: node workers/taskWorker.js
+    restart: unless-stopped
+
   mongo:
     image: mongo:7
-    container_name: taskmanager_mongo
+    container_name: mehfil_mongo
     ports:
-      - "27017:27017"
+      - "27018:27017"
     volumes:
-      - mongo_data:/data/db
+      - mehfil_mongo_data:/data/db
     restart: unless-stopped
 
   redis:
     image: redis:7
-    container_name: taskmanager_redis
+    container_name: mehfil_redis
     ports:
       - "6379:6379"
     restart: unless-stopped
 
 volumes:
-  mongo_data:
+  mehfil_mongo_data:

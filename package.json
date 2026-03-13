@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@bull-board/api": "^6.20.5",
+    "@bull-board/express": "^6.20.5",
     "bcrypt": "^6.0.0",
     "bullmq": "^5.71.0",
     "cors": "^2.8.6",

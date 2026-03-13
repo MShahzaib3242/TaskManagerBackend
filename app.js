@@ -4,6 +4,7 @@ const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
+const { serverAdapter } = require("./config/bullBoard");
 
 // All Routes
 const taskRoutes = require("./routes/taskRoutes");
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/admin/queues", serverAdapter.getRouter());
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
 
